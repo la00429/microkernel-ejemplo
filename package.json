@@ -21,6 +21,8 @@
     "onCommand:quickSnippet.insertSnippet",
     "onCommand:quickSnippet.listSnippets", 
     "onCommand:quickSnippet.insertConsoleLog",
+    "onCommand:quickSnippet.searchSnippets",
+    "onCommand:quickSnippet.insertByCategory",
     "onCommand:quickSnippet.openSettings"
   ],
   "main": "./out/extension.js",
@@ -43,6 +45,18 @@
         "title": "Insertar console.log",
         "category": "Quick Snippet",
         "icon": "$(debug-console)"
+      },
+      {
+        "command": "quickSnippet.searchSnippets",
+        "title": "Buscar Snippets",
+        "category": "Quick Snippet",
+        "icon": "$(search)"
+      },
+      {
+        "command": "quickSnippet.insertByCategory",
+        "title": "Insertar por Categoría",
+        "category": "Quick Snippet",
+        "icon": "$(folder)"
       },
       {
         "command": "quickSnippet.openSettings",
@@ -68,6 +82,18 @@
         "command": "quickSnippet.listSnippets",
         "key": "ctrl+shift+alt+s",
         "mac": "cmd+shift+alt+s"
+      },
+      {
+        "command": "quickSnippet.searchSnippets",
+        "key": "ctrl+shift+f",
+        "mac": "cmd+shift+f",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "quickSnippet.insertByCategory",
+        "key": "ctrl+shift+c",
+        "mac": "cmd+shift+c",
+        "when": "editorTextFocus"
       }
     ],
     "menus": {
@@ -81,6 +107,16 @@
           "command": "quickSnippet.insertConsoleLog",
           "when": "editorTextFocus && resourceExtname =~ /\\.(js|ts|jsx|tsx)$/",
           "group": "1_modification"
+        },
+        {
+          "command": "quickSnippet.searchSnippets",
+          "when": "editorTextFocus",
+          "group": "1_modification"
+        },
+        {
+          "command": "quickSnippet.insertByCategory",
+          "when": "editorTextFocus",
+          "group": "1_modification"
         }
       ],
       "commandPalette": [
@@ -92,6 +128,12 @@
         },
         {
           "command": "quickSnippet.insertConsoleLog"
+        },
+        {
+          "command": "quickSnippet.searchSnippets"
+        },
+        {
+          "command": "quickSnippet.insertByCategory"
         },
         {
           "command": "quickSnippet.openSettings"

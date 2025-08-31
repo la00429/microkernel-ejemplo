@@ -14,10 +14,10 @@ Plugin para VSCode que permite insertar rápidamente plantillas de código prede
 - [x] Configurar contribuciones en package.json
 - [x] Segundo commit: "Basic extension structure"
 
-### ⏳ Paso 3: Funcionalidad básica de inserción
-- [ ] Implementar inserción de texto simple
-- [ ] Crear primer snippet de ejemplo
-- [ ] Tercer commit: "Basic snippet insertion functionality"
+### ✅ Paso 3: Funcionalidad básica de inserción
+- [x] Implementar inserción de texto simple
+- [x] Crear primer snippet de ejemplo
+- [x] Tercer commit: "Basic snippet insertion functionality"
 
 ### ⏳ Paso 4: Sistema de plantillas
 - [ ] Crear sistema de plantillas configurables
@@ -84,12 +84,67 @@ Este plugin permitirá a los desarrolladores insertar rápidamente snippets de c
 
 | Comando | Atajo | Descripción |
 |---------|-------|-------------|
-| `Insertar Snippet Rápido` | `Ctrl+Shift+S` | Abre menú para seleccionar un snippet |
+| `Insertar Snippet Rápido` | `Ctrl+Shift+S` | Abre menú para seleccionar un snippet (con filtrado por lenguaje) |
 | `Insertar console.log` | `Ctrl+Shift+L` | Inserta directamente un console.log |
-| `Ver Lista de Snippets` | `Ctrl+Shift+Alt+S` | Abre vista web con todos los snippets |
+| `Ver Lista de Snippets` | `Ctrl+Shift+Alt+S` | Abre vista web interactiva con todos los snippets organizados |
+| `Buscar Snippets` | `Ctrl+Shift+F` | Busca snippets por nombre, descripción o categoría |
+| `Insertar por Categoría` | `Ctrl+Shift+C` | Navega por categorías para encontrar snippets |
 | `Abrir Configuración` | - | Abre la configuración de la extensión |
 
 ### Snippets Incluidos
-- **console.log**: Log básico de consola
-- **function**: Función básica de JavaScript
-- **class**: Clase básica de JavaScript 
+
+#### JavaScript/TypeScript (10 snippets)
+**Debug**
+- `console.log` [cl] - Log básico de consola
+- `console.error` [ce] - Log de error en consola
+
+**Functions**
+- `function` [fn] - Función básica de JavaScript
+- `arrow-function` [af] - Función flecha de ES6
+- `async-function` [afn] - Función asíncrona con manejo de errores
+
+**Classes**
+- `class` [cls] - Clase básica de JavaScript
+
+**Error Handling**
+- `try-catch` [tc] - Bloque try-catch
+
+**Loops**
+- `for-loop` [for] - Bucle for tradicional
+- `for-of` [fof] - Bucle for...of
+
+**Conditionals**
+- `if-else` [if] - Estructura condicional if-else
+
+#### HTML (3 snippets)
+**Boilerplate**
+- `html5-boilerplate` [html5] - Plantilla HTML5 básica
+
+**Elements**
+- `div-class` [div] - Div con clase CSS
+
+**Forms**
+- `form-basic` [form] - Formulario básico
+
+#### CSS (3 snippets)
+**Layout**
+- `flexbox-center` [flex-center] - Centrar con Flexbox
+- `grid-template` [grid] - Plantilla básica de CSS Grid
+
+**Responsive**
+- `media-query` [mq] - Media query responsive
+
+#### Python (4 snippets)
+**Debug**
+- `print-debug` [pd] - Print de debug
+
+**Functions**
+- `def-function` [def] - Función de Python
+
+**Classes**
+- `class-python` [class] - Clase de Python
+
+**Error Handling**
+- `try-except` [try] - Bloque try-except
+
+**Total: 20 snippets en 4 lenguajes, organizados en 9 categorías** 
