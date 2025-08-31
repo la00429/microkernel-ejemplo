@@ -18,7 +18,10 @@
     "code-generation"
   ],
   "activationEvents": [
-    "onCommand:quickSnippet.insertSnippet"
+    "onCommand:quickSnippet.insertSnippet",
+    "onCommand:quickSnippet.listSnippets", 
+    "onCommand:quickSnippet.insertConsoleLog",
+    "onCommand:quickSnippet.openSettings"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -26,7 +29,26 @@
       {
         "command": "quickSnippet.insertSnippet",
         "title": "Insertar Snippet Rápido",
-        "category": "Quick Snippet"
+        "category": "Quick Snippet",
+        "icon": "$(symbol-snippet)"
+      },
+      {
+        "command": "quickSnippet.listSnippets",
+        "title": "Ver Lista de Snippets",
+        "category": "Quick Snippet",
+        "icon": "$(list-unordered)"
+      },
+      {
+        "command": "quickSnippet.insertConsoleLog",
+        "title": "Insertar console.log",
+        "category": "Quick Snippet",
+        "icon": "$(debug-console)"
+      },
+      {
+        "command": "quickSnippet.openSettings",
+        "title": "Abrir Configuración",
+        "category": "Quick Snippet",
+        "icon": "$(settings)"
       }
     ],
     "keybindings": [
@@ -35,8 +57,63 @@
         "key": "ctrl+shift+s",
         "mac": "cmd+shift+s",
         "when": "editorTextFocus"
+      },
+      {
+        "command": "quickSnippet.insertConsoleLog",
+        "key": "ctrl+shift+l",
+        "mac": "cmd+shift+l",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "quickSnippet.listSnippets",
+        "key": "ctrl+shift+alt+s",
+        "mac": "cmd+shift+alt+s"
       }
-    ]
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "quickSnippet.insertSnippet",
+          "when": "editorTextFocus",
+          "group": "1_modification"
+        },
+        {
+          "command": "quickSnippet.insertConsoleLog",
+          "when": "editorTextFocus && resourceExtname =~ /\\.(js|ts|jsx|tsx)$/",
+          "group": "1_modification"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "quickSnippet.insertSnippet"
+        },
+        {
+          "command": "quickSnippet.listSnippets"
+        },
+        {
+          "command": "quickSnippet.insertConsoleLog"
+        },
+        {
+          "command": "quickSnippet.openSettings"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Quick Snippet Inserter",
+      "properties": {
+        "quickSnippet.enableWelcomeMessage": {
+          "type": "boolean",
+          "default": true,
+          "description": "Mostrar mensaje de bienvenida al activar la extensión"
+        },
+        "quickSnippet.defaultLanguage": {
+          "type": "string",
+          "default": "javascript",
+          "description": "Lenguaje por defecto para snippets",
+          "enum": ["javascript", "typescript", "python", "java", "csharp", "other"]
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

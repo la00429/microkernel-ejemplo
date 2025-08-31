@@ -9,10 +9,10 @@ Plugin para VSCode que permite insertar rápidamente plantillas de código prede
 - [x] Configurar package.json y archivos básicos
 - [x] Primer commit: "Initial project setup"
 
-### ⏳ Paso 2: Estructura básica del plugin
-- [ ] Crear comando básico de activación
-- [ ] Configurar contribuciones en package.json
-- [ ] Segundo commit: "Basic extension structure"
+### ✅ Paso 2: Estructura básica del plugin
+- [x] Crear comando básico de activación
+- [x] Configurar contribuciones en package.json
+- [x] Segundo commit: "Basic extension structure"
 
 ### ⏳ Paso 3: Funcionalidad básica de inserción
 - [ ] Implementar inserción de texto simple
@@ -72,6 +72,24 @@ Este plugin permitirá a los desarrolladores insertar rápidamente snippets de c
 
 ### Estado Actual
 - ✅ La extensión se carga correctamente
-- ✅ El comando principal está registrado
-- ✅ Atajo de teclado configurado
-- 🔄 Solo muestra un mensaje de prueba por ahora 
+- ✅ Múltiples comandos registrados
+- ✅ Atajos de teclado configurados
+- ✅ Inserción real de snippets funcional
+- ✅ Quick Pick para selección de snippets
+- ✅ Vista web para lista de snippets
+- ✅ Menú contextual en editor
+- ✅ Configuración personalizable
+
+### Comandos Disponibles
+
+| Comando | Atajo | Descripción |
+|---------|-------|-------------|
+| `Insertar Snippet Rápido` | `Ctrl+Shift+S` | Abre menú para seleccionar un snippet |
+| `Insertar console.log` | `Ctrl+Shift+L` | Inserta directamente un console.log |
+| `Ver Lista de Snippets` | `Ctrl+Shift+Alt+S` | Abre vista web con todos los snippets |
+| `Abrir Configuración` | - | Abre la configuración de la extensión |
+
+### Snippets Incluidos
+- **console.log**: Log básico de consola
+- **function**: Función básica de JavaScript
+- **class**: Clase básica de JavaScript 
