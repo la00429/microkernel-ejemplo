@@ -1,0 +1,61 @@
+{
+  "name": "quick-snippet-inserter",
+  "displayName": "Quick Snippet Inserter",
+  "description": "Inserta rápidamente snippets de código desde plantillas predefinidas",
+  "version": "0.1.0",
+  "publisher": "tu-nombre-publisher",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Snippets",
+    "Other"
+  ],
+  "keywords": [
+    "snippets",
+    "templates",
+    "productivity",
+    "code-generation"
+  ],
+  "activationEvents": [
+    "onCommand:quickSnippet.insertSnippet"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "quickSnippet.insertSnippet",
+        "title": "Insertar Snippet Rápido",
+        "category": "Quick Snippet"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "quickSnippet.insertSnippet",
+        "key": "ctrl+shift+s",
+        "mac": "cmd+shift+s",
+        "when": "editorTextFocus"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/node": "16.x",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tu-usuario/quick-snippet-inserter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tu-usuario/quick-snippet-inserter/issues"
+  },
+  "homepage": "https://github.com/tu-usuario/quick-snippet-inserter#readme",
+  "license": "MIT"
+} 
