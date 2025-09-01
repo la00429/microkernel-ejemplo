@@ -31,6 +31,11 @@
     "onCommand:quickSnippet.openTemplatesFile",
     "onCommand:quickSnippet.reloadTemplates",
     "onCommand:quickSnippet.templateStats",
+    "onCommand:quickSnippet.showMainMenu",
+    "onCommand:quickSnippet.manageTemplates",
+    "onCommand:quickSnippet.importExportMenu",
+    "onCommand:quickSnippet.exploreByLanguage",
+    "onCommand:quickSnippet.quickContextSnippet",
     "onCommand:quickSnippet.openSettings"
   ],
   "main": "./out/extension.js",
@@ -115,6 +120,36 @@
         "icon": "$(graph)"
       },
       {
+        "command": "quickSnippet.showMainMenu",
+        "title": "Menú Principal",
+        "category": "Quick Snippet",
+        "icon": "$(menu)"
+      },
+      {
+        "command": "quickSnippet.manageTemplates",
+        "title": "Gestionar Snippets Personalizados",
+        "category": "Quick Snippet",
+        "icon": "$(tools)"
+      },
+      {
+        "command": "quickSnippet.importExportMenu",
+        "title": "Menú Importar/Exportar",
+        "category": "Quick Snippet",
+        "icon": "$(package)"
+      },
+      {
+        "command": "quickSnippet.exploreByLanguage",
+        "title": "Explorar por Lenguaje",
+        "category": "Quick Snippet",
+        "icon": "$(code)"
+      },
+      {
+        "command": "quickSnippet.quickContextSnippet",
+        "title": "Snippets Rápidos del Contexto",
+        "category": "Quick Snippet",
+        "icon": "$(zap)"
+      },
+      {
         "command": "quickSnippet.openSettings",
         "title": "Abrir Configuración",
         "category": "Quick Snippet",
@@ -161,6 +196,22 @@
         "command": "quickSnippet.templateStats",
         "key": "ctrl+shift+alt+t",
         "mac": "cmd+shift+alt+t"
+      },
+      {
+        "command": "quickSnippet.showMainMenu",
+        "key": "ctrl+shift+m",
+        "mac": "cmd+shift+m"
+      },
+      {
+        "command": "quickSnippet.exploreByLanguage",
+        "key": "ctrl+shift+alt+l",
+        "mac": "cmd+shift+alt+l"
+      },
+      {
+        "command": "quickSnippet.quickContextSnippet",
+        "key": "ctrl+shift+q",
+        "mac": "cmd+shift+q",
+        "when": "editorTextFocus"
       }
     ],
     "menus": {
@@ -225,6 +276,21 @@
         },
         {
           "command": "quickSnippet.templateStats"
+        },
+        {
+          "command": "quickSnippet.showMainMenu"
+        },
+        {
+          "command": "quickSnippet.manageTemplates"
+        },
+        {
+          "command": "quickSnippet.importExportMenu"
+        },
+        {
+          "command": "quickSnippet.exploreByLanguage"
+        },
+        {
+          "command": "quickSnippet.quickContextSnippet"
         },
         {
           "command": "quickSnippet.openSettings"

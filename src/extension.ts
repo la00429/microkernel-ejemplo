@@ -9,6 +9,7 @@ import {
     searchSnippets 
 } from './snippets';
 import { TemplateManager } from './templateManager';
+import { UserInterface } from './userInterface';
 
 export function activate(context: vscode.ExtensionContext) {
     console.log('🚀 Quick Snippet Inserter está activo!');
@@ -42,13 +43,13 @@ export function activate(context: vscode.ExtensionContext) {
         );
     }
 
-    // Comando principal: Insertar Snippet
+    // Comando principal: Insertar Snippet (Mejorado)
     let insertSnippetCommand = vscode.commands.registerCommand('quickSnippet.insertSnippet', async () => {
         try {
             // Obtener el editor activo
             const editor = vscode.window.activeTextEditor;
             if (!editor) {
-                vscode.window.showWarningMessage('No hay ningún editor abierto');
+                UserInterface.showWarningMessage('No hay ningún editor abierto');
                 return;
             }
 
@@ -63,26 +64,19 @@ export function activate(context: vscode.ExtensionContext) {
                 relevantSnippets = getAllSnippets();
             }
 
-            // Crear items para Quick Pick con categorías
-            const snippetItems = relevantSnippets.map(snippet => ({
-                label: `$(symbol-snippet) ${snippet.name}`,
-                description: `${snippet.category} - ${snippet.description}`,
-                detail: snippet.prefix ? `Prefijo: ${snippet.prefix} | Lenguaje: ${snippet.language || 'Cualquiera'}` : `Lenguaje: ${snippet.language || 'Cualquiera'}`,
-                snippet: snippet
-            }));
+            // Usar la nueva interfaz mejorada
+            const selectedSnippet = await UserInterface.showSnippetSelector(
+                relevantSnippets,
+                currentLanguage,
+                '🚀 Insertar Snippet'
+            );
 
-            const selectedItem = await vscode.window.showQuickPick(snippetItems, {
-                placeHolder: `Selecciona un snippet para insertar (${relevantSnippets.length} disponibles)`,
-                matchOnDescription: true,
-                matchOnDetail: true
-            });
-
-            if (selectedItem) {
-                await insertSnippetAtCursor(editor, selectedItem.snippet);
-                vscode.window.showInformationMessage(`✅ Snippet "${selectedItem.snippet.name}" insertado`);
+            if (selectedSnippet) {
+                await insertSnippetAtCursor(editor, selectedSnippet);
+                UserInterface.showSuccessMessage(`Snippet "${selectedSnippet.name}" insertado`);
             }
         } catch (error) {
-            vscode.window.showErrorMessage(`Error al insertar snippet: ${error}`);
+            UserInterface.showErrorMessage(`Error al insertar snippet: ${error}`);
         }
     });
 
@@ -113,104 +107,135 @@ export function activate(context: vscode.ExtensionContext) {
         }
     });
 
-    // Comando: Buscar snippets
+    // Comando: Buscar snippets (Mejorado)
     let searchSnippetsCommand = vscode.commands.registerCommand('quickSnippet.searchSnippets', async () => {
         try {
-            const searchQuery = await vscode.window.showInputBox({
-                placeHolder: 'Buscar snippets por nombre, descripción o categoría...',
-                prompt: 'Ingresa términos de búsqueda'
-            });
+            const searchQuery = await UserInterface.showSearchInput('Buscar por nombre, descripción, categoría o prefijo...');
 
             if (!searchQuery) {
                 return;
             }
 
-            const foundSnippets = searchSnippetsExtended(searchQuery);
+            const foundSnippets = await UserInterface.withProgress(
+                'Buscando snippets...',
+                async () => {
+                    // Simular pequeño delay para mostrar progress
+                    await new Promise(resolve => setTimeout(resolve, 200));
+                    return searchSnippetsExtended(searchQuery);
+                }
+            );
             
             if (foundSnippets.length === 0) {
-                vscode.window.showInformationMessage(`No se encontraron snippets para "${searchQuery}"`);
+                UserInterface.showWarningMessage(`No se encontraron snippets para "${searchQuery}"`);
                 return;
             }
 
             const editor = vscode.window.activeTextEditor;
             if (!editor) {
-                vscode.window.showWarningMessage('No hay ningún editor abierto');
+                UserInterface.showWarningMessage('No hay ningún editor abierto');
                 return;
             }
 
-            const snippetItems = foundSnippets.map(snippet => ({
-                label: `$(search) ${snippet.name}`,
-                description: `${snippet.category} - ${snippet.description}`,
-                detail: `Lenguaje: ${snippet.language || 'Cualquiera'}`,
-                snippet: snippet
-            }));
+            const selectedSnippet = await UserInterface.showSnippetSelector(
+                foundSnippets,
+                undefined,
+                `🔍 Resultados de búsqueda: "${searchQuery}" (${foundSnippets.length})`
+            );
 
-            const selectedItem = await vscode.window.showQuickPick(snippetItems, {
-                placeHolder: `${foundSnippets.length} resultados para "${searchQuery}"`,
-                matchOnDescription: true
-            });
-
-            if (selectedItem) {
-                await insertSnippetAtCursor(editor, selectedItem.snippet);
-                vscode.window.showInformationMessage(`✅ Snippet "${selectedItem.snippet.name}" insertado`);
+            if (selectedSnippet) {
+                await insertSnippetAtCursor(editor, selectedSnippet);
+                UserInterface.showSuccessMessage(`Snippet "${selectedSnippet.name}" insertado`);
             }
         } catch (error) {
-            vscode.window.showErrorMessage(`Error en la búsqueda: ${error}`);
+            UserInterface.showErrorMessage(`Error en la búsqueda: ${error}`);
         }
     });
 
-    // Comando: Insertar por categoría
+    // Comando: Insertar por categoría (Mejorado)
     let insertByCategoryCommand = vscode.commands.registerCommand('quickSnippet.insertByCategory', async () => {
         try {
-            const categories = getAllCategories();
+            const allSnippetsExtended = getAllSnippets();
             
-            const categoryItems = categories.map(category => ({
-                label: `$(folder) ${category}`,
-                description: `${getSnippetsByCategory(category).length} snippets`,
-                category: category
-            }));
-
-            const selectedCategory = await vscode.window.showQuickPick(categoryItems, {
-                placeHolder: 'Selecciona una categoría'
-            });
+            // Usar selector de categorías mejorado
+            const selectedCategory = await UserInterface.showCategorySelector(
+                allSnippetsExtended,
+                '📁 Seleccionar Categoría'
+            );
 
             if (!selectedCategory) {
                 return;
             }
 
-            const categorySnippets = getSnippetsByCategory(selectedCategory.category);
+            const categorySnippets = allSnippetsExtended.filter(s => s.category === selectedCategory);
             const editor = vscode.window.activeTextEditor;
             
             if (!editor) {
-                vscode.window.showWarningMessage('No hay ningún editor abierto');
+                UserInterface.showWarningMessage('No hay ningún editor abierto');
                 return;
             }
 
-            const snippetItems = categorySnippets.map(snippet => ({
-                label: `$(symbol-snippet) ${snippet.name}`,
-                description: snippet.description,
-                detail: `Lenguaje: ${snippet.language || 'Cualquiera'}`,
-                snippet: snippet
-            }));
+            const selectedSnippet = await UserInterface.showSnippetSelector(
+                categorySnippets,
+                editor.document.languageId,
+                `📁 Snippets en "${selectedCategory}"`
+            );
 
-            const selectedItem = await vscode.window.showQuickPick(snippetItems, {
-                placeHolder: `Snippets en categoría "${selectedCategory.category}"`
-            });
-
-            if (selectedItem) {
-                await insertSnippetAtCursor(editor, selectedItem.snippet);
-                vscode.window.showInformationMessage(`✅ Snippet "${selectedItem.snippet.name}" insertado`);
+            if (selectedSnippet) {
+                await insertSnippetAtCursor(editor, selectedSnippet);
+                UserInterface.showSuccessMessage(`Snippet "${selectedSnippet.name}" insertado`);
             }
         } catch (error) {
-            vscode.window.showErrorMessage(`Error al insertar por categoría: ${error}`);
+            UserInterface.showErrorMessage(`Error al insertar por categoría: ${error}`);
         }
     });
 
     // ========== COMANDOS DE GESTIÓN DE PLANTILLAS ==========
 
-    // Comando: Crear plantilla personalizada
+    // Comando: Crear plantilla personalizada (Mejorado)
     let createTemplateCommand = vscode.commands.registerCommand('quickSnippet.createTemplate', async () => {
-        await templateManager.createTemplate();
+        try {
+            const snippetData = await UserInterface.showMultiStepSnippetCreator();
+            
+            if (!snippetData) {
+                return; // Usuario canceló
+            }
+
+            // Crear usando el template manager pero con los datos del asistente mejorado
+            await UserInterface.withProgress(
+                'Creando snippet personalizado...',
+                async (progress) => {
+                    progress.report({ message: 'Validando datos...' });
+                    await new Promise(resolve => setTimeout(resolve, 300));
+                    
+                    progress.report({ message: 'Guardando snippet...' });
+                    await templateManager.createTemplateFromData(snippetData);
+                    
+                    progress.report({ message: 'Finalizando...' });
+                    await new Promise(resolve => setTimeout(resolve, 200));
+                }
+            );
+
+            const response = await UserInterface.showSuccessMessage(
+                `Snippet "${snippetData.name}" creado correctamente`,
+                ['Usar ahora', 'Ver lista']
+            );
+
+            if (response === 'Usar ahora') {
+                // Insertar el snippet recién creado
+                const editor = vscode.window.activeTextEditor;
+                if (editor) {
+                    const userSnippets = templateManager.getUserSnippets();
+                    const newSnippet = userSnippets.find(s => s.name === snippetData.name);
+                    if (newSnippet) {
+                        await insertSnippetAtCursor(editor, newSnippet);
+                    }
+                }
+            } else if (response === 'Ver lista') {
+                vscode.commands.executeCommand('quickSnippet.listSnippets');
+            }
+        } catch (error) {
+            UserInterface.showErrorMessage(`Error al crear snippet: ${error}`);
+        }
     });
 
     // Comando: Editar plantilla personalizada
@@ -258,6 +283,174 @@ export function activate(context: vscode.ExtensionContext) {
         panel.webview.html = generateStatsHTML(stats, userSnippets);
     });
 
+    // ========== COMANDOS DE INTERFAZ MEJORADA ==========
+
+    // Comando: Menú principal
+    let mainMenuCommand = vscode.commands.registerCommand('quickSnippet.showMainMenu', async () => {
+        try {
+            const action = await UserInterface.showMainMenu();
+            
+            if (!action) return;
+
+            switch (action) {
+                case 'insert':
+                    vscode.commands.executeCommand('quickSnippet.insertSnippet');
+                    break;
+                case 'search':
+                    vscode.commands.executeCommand('quickSnippet.searchSnippets');
+                    break;
+                case 'category':
+                    vscode.commands.executeCommand('quickSnippet.insertByCategory');
+                    break;
+                case 'create':
+                    vscode.commands.executeCommand('quickSnippet.createTemplate');
+                    break;
+                case 'manage':
+                    vscode.commands.executeCommand('quickSnippet.manageTemplates');
+                    break;
+                case 'stats':
+                    vscode.commands.executeCommand('quickSnippet.templateStats');
+                    break;
+                case 'list':
+                    vscode.commands.executeCommand('quickSnippet.listSnippets');
+                    break;
+                case 'import_export':
+                    vscode.commands.executeCommand('quickSnippet.importExportMenu');
+                    break;
+            }
+        } catch (error) {
+            UserInterface.showErrorMessage(`Error en menú principal: ${error}`);
+        }
+    });
+
+    // Comando: Menú de gestión de plantillas
+    let manageTemplatesCommand = vscode.commands.registerCommand('quickSnippet.manageTemplates', async () => {
+        try {
+            const action = await UserInterface.showManagementMenu();
+            
+            if (!action) return;
+
+            switch (action) {
+                case 'edit':
+                    await templateManager.editTemplate();
+                    break;
+                case 'delete':
+                    await templateManager.deleteTemplate();
+                    break;
+                case 'open_file':
+                    await templateManager.openTemplatesFile();
+                    break;
+                case 'reload':
+                    templateManager.reloadTemplates();
+                    break;
+            }
+        } catch (error) {
+            UserInterface.showErrorMessage(`Error en gestión de plantillas: ${error}`);
+        }
+    });
+
+    // Comando: Menú de importación/exportación
+    let importExportMenuCommand = vscode.commands.registerCommand('quickSnippet.importExportMenu', async () => {
+        try {
+            const action = await UserInterface.showImportExportMenu();
+            
+            if (!action) return;
+
+            switch (action) {
+                case 'import':
+                    await templateManager.importTemplates();
+                    break;
+                case 'export':
+                    await templateManager.exportTemplates();
+                    break;
+            }
+        } catch (error) {
+            UserInterface.showErrorMessage(`Error en importación/exportación: ${error}`);
+        }
+    });
+
+    // Comando: Explorar por lenguaje
+    let exploreByLanguageCommand = vscode.commands.registerCommand('quickSnippet.exploreByLanguage', async () => {
+        try {
+            const allSnippetsExtended = getAllSnippets();
+            
+            const selectedLanguage = await UserInterface.showLanguageSelector(
+                allSnippetsExtended,
+                '🔤 Explorar por Lenguaje'
+            );
+
+            if (!selectedLanguage) {
+                return;
+            }
+
+            let filteredSnippets: Snippet[];
+            if (selectedLanguage === 'all') {
+                filteredSnippets = allSnippetsExtended;
+            } else {
+                filteredSnippets = allSnippetsExtended.filter(s => 
+                    (s.language === selectedLanguage) || 
+                    (!s.language && selectedLanguage === 'universal')
+                );
+            }
+
+            const editor = vscode.window.activeTextEditor;
+            if (!editor) {
+                UserInterface.showWarningMessage('No hay ningún editor abierto');
+                return;
+            }
+
+            const selectedSnippet = await UserInterface.showSnippetSelector(
+                filteredSnippets,
+                selectedLanguage === 'all' ? undefined : selectedLanguage,
+                `🔤 Snippets en ${selectedLanguage}`
+            );
+
+            if (selectedSnippet) {
+                await insertSnippetAtCursor(editor, selectedSnippet);
+                UserInterface.showSuccessMessage(`Snippet "${selectedSnippet.name}" insertado`);
+            }
+        } catch (error) {
+            UserInterface.showErrorMessage(`Error al explorar por lenguaje: ${error}`);
+        }
+    });
+
+    // Comando: Snippet rápido del contexto
+    let quickContextSnippetCommand = vscode.commands.registerCommand('quickSnippet.quickContextSnippet', async () => {
+        try {
+            const editor = vscode.window.activeTextEditor;
+            if (!editor) {
+                UserInterface.showWarningMessage('No hay ningún editor abierto');
+                return;
+            }
+
+            const currentLanguage = editor.document.languageId;
+            const allSnippetsExtended = getAllSnippets();
+            
+            // Obtener snippets más relevantes para el contexto actual
+            const relevantSnippets = allSnippetsExtended
+                .filter(s => s.language === currentLanguage)
+                .slice(0, 10); // Top 10 snippets
+
+            if (relevantSnippets.length === 0) {
+                UserInterface.showWarningMessage(`No hay snippets específicos para ${currentLanguage}. Usa Ctrl+Shift+S para ver todos.`);
+                return;
+            }
+
+            const selectedSnippet = await UserInterface.showSnippetSelector(
+                relevantSnippets,
+                currentLanguage,
+                `⚡ Snippets rápidos para ${currentLanguage}`
+            );
+
+            if (selectedSnippet) {
+                await insertSnippetAtCursor(editor, selectedSnippet);
+                UserInterface.showSuccessMessage(`Snippet "${selectedSnippet.name}" insertado`);
+            }
+        } catch (error) {
+            UserInterface.showErrorMessage(`Error en snippet rápido: ${error}`);
+        }
+    });
+
     // Comando: Abrir configuración
     let openSettingsCommand = vscode.commands.registerCommand('quickSnippet.openSettings', () => {
         vscode.commands.executeCommand('workbench.action.openSettings', 'quickSnippet');
@@ -265,11 +458,14 @@ export function activate(context: vscode.ExtensionContext) {
 
     // Registrar todos los comandos
     context.subscriptions.push(
+        // Comandos principales mejorados
         insertSnippetCommand,
         listSnippetsCommand,
         insertConsoleLogCommand,
         searchSnippetsCommand,
         insertByCategoryCommand,
+        
+        // Comandos de gestión de plantillas
         createTemplateCommand,
         editTemplateCommand,
         deleteTemplateCommand,
@@ -278,6 +474,15 @@ export function activate(context: vscode.ExtensionContext) {
         openTemplatesFileCommand,
         reloadTemplatesCommand,
         templateStatsCommand,
+        
+        // Comandos de interfaz mejorada
+        mainMenuCommand,
+        manageTemplatesCommand,
+        importExportMenuCommand,
+        exploreByLanguageCommand,
+        quickContextSnippetCommand,
+        
+        // Configuración
         openSettingsCommand
     );
 

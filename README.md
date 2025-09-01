@@ -24,10 +24,10 @@ Plugin para VSCode que permite insertar rápidamente plantillas de código prede
 - [x] Implementar carga de plantillas desde archivos
 - [x] Cuarto commit: "Template system implementation"
 
-### ⏳ Paso 5: Interfaz de usuario
-- [ ] Agregar menú de selección de plantillas
-- [ ] Implementar quick pick interface
-- [ ] Quinto commit: "User interface for template selection"
+### ✅ Paso 5: Interfaz de usuario
+- [x] Agregar menú de selección de plantillas
+- [x] Implementar quick pick interface
+- [x] Quinto commit: "User interface for template selection"
 
 ### ⏳ Paso 6: Documentación y empaquetado
 - [ ] Crear README y documentación
@@ -67,15 +67,19 @@ Este plugin permitirá a los desarrolladores insertar rápidamente snippets de c
    - Abre este proyecto en VSCode
    - Presiona `F5` para abrir una nueva ventana de VSCode con la extensión cargada
    - En la nueva ventana, crea un archivo de prueba (ej: `test.js`)
-   - **Probar funciones básicas:**
-     - `Ctrl+Shift+S`: Insertar snippet (menú de selección)
+   - **🆕 Probar la nueva interfaz:**
+     - `Ctrl+Shift+M`: **Menú principal** (¡empieza aquí!)
+     - `Ctrl+Shift+Q`: **Snippets contextuales** para el archivo actual
+     - `Ctrl+Shift+N`: **Asistente de creación** paso a paso
+   - **Probar funciones básicas mejoradas:**
+     - `Ctrl+Shift+S`: Insertar snippet (interfaz organizada por categorías)
      - `Ctrl+Shift+L`: Insertar console.log rápido
-     - `Ctrl+Shift+F`: Buscar snippets
-     - `Ctrl+Shift+C`: Insertar por categoría
-   - **Probar funciones avanzadas:**
-     - `Ctrl+Shift+N`: Crear snippet personalizado
-     - `Ctrl+Shift+Alt+S`: Ver lista completa de snippets
-     - `Ctrl+Shift+Alt+T`: Ver estadísticas
+     - `Ctrl+Shift+F`: Búsqueda avanzada con progress bar
+     - `Ctrl+Shift+C`: Insertar por categoría (selector mejorado)
+   - **Probar funciones de exploración:**
+     - `Ctrl+Shift+Alt+L`: **Explorar por lenguaje**
+     - `Ctrl+Shift+Alt+S`: Ver lista completa con filtros
+     - `Ctrl+Shift+Alt+T`: Dashboard de estadísticas visual
    - **Command Palette:** `Ctrl+Shift+P` y busca "Quick Snippet" para ver todos los comandos
 
 ### Estado Actual
@@ -83,38 +87,53 @@ Este plugin permitirá a los desarrolladores insertar rápidamente snippets de c
 - ✅ Múltiples comandos registrados  
 - ✅ Atajos de teclado configurados
 - ✅ Inserción real de snippets funcional
-- ✅ Quick Pick para selección de snippets
-- ✅ Vista web interactiva para lista de snippets
+- ✅ **Quick Pick mejorado con categorías organizadas**
+- ✅ **Vista web interactiva con filtros avanzados**
 - ✅ Menú contextual en editor
 - ✅ Configuración personalizable
 - ✅ **Sistema completo de plantillas personalizadas**
 - ✅ **Gestión de archivos JSON para snippets**
 - ✅ **Importación/Exportación de snippets**
-- ✅ **Dashboard de estadísticas**
+- ✅ **Dashboard de estadísticas visual**
 - ✅ **Persistencia de datos**
+- ✅ **🆕 Interfaz de usuario completamente renovada**
+- ✅ **🆕 Menús centralizados para navegación**
+- ✅ **🆕 Asistente paso a paso para crear snippets**
+- ✅ **🆕 Progress bars para operaciones largas**
+- ✅ **🆕 Mensajes de notificación mejorados**
+- ✅ **🆕 Selecciones contextuales inteligentes**
 
 ### Comandos Disponibles
 
 #### 🚀 Comandos Principales
 | Comando | Atajo | Descripción |
 |---------|-------|-------------|
-| `Insertar Snippet Rápido` | `Ctrl+Shift+S` | Abre menú para seleccionar un snippet (incluye snippets personalizados) |
+| `Menú Principal` | `Ctrl+Shift+M` | **🆕 Centro de control principal** - Acceso a todas las funciones |
+| `Insertar Snippet Rápido` | `Ctrl+Shift+S` | Interfaz mejorada para seleccionar snippets (con categorías organizadas) |
+| `Snippets Rápidos del Contexto` | `Ctrl+Shift+Q` | **🆕 Snippets relevantes** para el lenguaje actual |
 | `Insertar console.log` | `Ctrl+Shift+L` | Inserta directamente un console.log |
-| `Ver Lista de Snippets` | `Ctrl+Shift+Alt+S` | Vista web interactiva con todos los snippets (predefinidos + personalizados) |
-| `Buscar Snippets` | `Ctrl+Shift+F` | Busca en todos los snippets por nombre, descripción o categoría |
-| `Insertar por Categoría` | `Ctrl+Shift+C` | Navega por categorías para encontrar snippets |
+| `Ver Lista de Snippets` | `Ctrl+Shift+Alt+S` | Vista web interactiva con filtros por lenguaje |
+| `Buscar Snippets` | `Ctrl+Shift+F` | Búsqueda avanzada con progress bar |
+| `Insertar por Categoría` | `Ctrl+Shift+C` | Navegación mejorada por categorías |
+| `Explorar por Lenguaje` | `Ctrl+Shift+Alt+L` | **🆕 Filtrar** snippets por lenguaje de programación |
 
 #### 🛠️ Gestión de Snippets Personalizados
 | Comando | Atajo | Descripción |
 |---------|-------|-------------|
-| `Crear Snippet Personalizado` | `Ctrl+Shift+N` | Crea un nuevo snippet personalizado con asistente interactivo |
-| `Editar Snippet Personalizado` | - | Edita un snippet personalizado existente |
-| `Eliminar Snippet Personalizado` | - | Elimina un snippet personalizado (con confirmación) |
-| `Importar Snippets desde Archivo` | - | Importa snippets desde un archivo JSON |
-| `Exportar Snippets a Archivo` | - | Exporta tus snippets personalizados a un archivo JSON |
-| `Abrir Archivo de Snippets` | - | Abre el archivo JSON de snippets para edición manual |
-| `Recargar Snippets Personalizados` | - | Recarga los snippets desde el archivo (útil tras edición manual) |
-| `Ver Estadísticas de Snippets` | `Ctrl+Shift+Alt+T` | Dashboard con estadísticas detalladas de tus snippets |
+| `Crear Snippet Personalizado` | `Ctrl+Shift+N` | **🆕 Asistente paso a paso** mejorado para crear snippets |
+| `Gestionar Snippets Personalizados` | - | **🆕 Menú centralizado** para editar, eliminar, etc. |
+| `Menú Importar/Exportar` | - | **🆕 Centro de gestión** de archivos de snippets |
+| `Ver Estadísticas de Snippets` | `Ctrl+Shift+Alt+T` | Dashboard visual con gráficos y métricas |
+
+##### Acciones Individuales (disponibles desde menús)
+| Acción | Descripción |
+|--------|-------------|
+| `Editar Snippet` | Modifica snippets existentes con interfaz mejorada |
+| `Eliminar Snippet` | Eliminación segura con confirmación visual |
+| `Importar desde Archivo` | Carga snippets desde JSON con validación |
+| `Exportar a Archivo` | Guarda snippets con progress bar |
+| `Abrir Archivo de Snippets` | Edición manual del archivo JSON |
+| `Recargar Snippets` | Sincronización tras edición manual |
 
 #### ⚙️ Configuración
 | Comando | Atajo | Descripción |
@@ -178,6 +197,64 @@ Este plugin permitirá a los desarrolladores insertar rápidamente snippets de c
 - `try-except` [try] - Bloque try-except
 
 **Total: 20 snippets predefinidos en 4 lenguajes, organizados en 9 categorías**
+
+## 🎨 Interfaz de Usuario Renovada
+
+### Características de la Nueva Interfaz
+
+#### ✨ **Quick Pick Mejorado**
+- **Organización por categorías:** Los snippets se agrupan visualmente por categoría
+- **Información contextual:** Cada snippet muestra lenguaje, prefijo y descripción
+- **Iconos intuitivos:** Representaciones visuales por tipo de snippet y lenguaje
+- **Filtrado inteligente:** Búsqueda en nombres, descripciones y categorías
+- **Headers informativos:** Estadísticas en tiempo real de snippets disponibles
+
+#### 🏠 **Menú Principal Centralizado** (`Ctrl+Shift+M`)
+- **Centro de control único:** Acceso a todas las funciones desde un lugar
+- **Navegación intuitiva:** Íconos y descripciones claras para cada acción
+- **Organización lógica:** Funciones agrupadas por propósito (insertar, gestionar, explorar)
+
+#### 🧙‍♂️ **Asistente Multi-Paso para Crear Snippets** (`Ctrl+Shift+N`)
+- **Proceso guiado:** 6 pasos claros con validación en tiempo real
+- **Validación inteligente:** Verificación de nombres únicos, caracteres válidos
+- **Sugerencias contextuales:** Valores por defecto según el lenguaje seleccionado
+- **Progreso visual:** Indicador de paso actual (ej: "Paso 3/6")
+
+#### ⚡ **Snippets Contextuales** (`Ctrl+Shift+Q`)
+- **Detección automática:** Identifica el lenguaje del archivo actual
+- **Filtrado inteligente:** Muestra solo snippets relevantes para el contexto
+- **Acceso rápido:** Top 10 snippets más útiles para el lenguaje actual
+
+#### 🔍 **Búsqueda Avanzada**
+- **Validación de entrada:** Mínimo 2 caracteres para buscar
+- **Progress bar:** Indicador visual durante la búsqueda
+- **Resultados organizados:** Misma interfaz mejorada de selección
+- **Búsqueda fuzzy:** Encuentra coincidencias en nombres, descripciones, categorías
+
+#### 📱 **Navegación por Lenguaje** (`Ctrl+Shift+Alt+L`)
+- **Selector visual:** Lista de lenguajes con estadísticas
+- **Íconos por lenguaje:** Representación visual única para cada lenguaje
+- **Estadísticas en tiempo real:** Cantidad de snippets por lenguaje
+- **Opción universal:** Ver todos los lenguajes en una vista
+
+#### 🎯 **Navegación por Categoría Mejorada**
+- **Descripciones contextuales:** Cada categoría explica su propósito
+- **Conteo de snippets:** Información cuantitativa por categoría
+- **Organización alfabética:** Categorías ordenadas para fácil navegación
+
+#### 💬 **Sistema de Notificaciones Mejorado**
+- **Íconos contextuales:** ✅ éxito, ❌ error, ⚠️ advertencia
+- **Acciones interactivas:** Botones para "Usar ahora", "Ver lista", etc.
+- **Progress bars:** Para operaciones que toman tiempo (importar, exportar)
+- **Confirmaciones seguras:** Diálogos modales para acciones destructivas
+
+### Flujo de Trabajo Mejorado
+
+1. **Inicio rápido:** `Ctrl+Shift+M` → Menú principal → Seleccionar acción
+2. **Uso cotidiano:** `Ctrl+Shift+S` → Interfaz organizada → Insertar snippet
+3. **Contexto específico:** `Ctrl+Shift+Q` → Snippets del lenguaje actual
+4. **Exploración:** `Ctrl+Shift+Alt+L` → Por lenguaje o `Ctrl+Shift+C` → Por categoría
+5. **Creación:** `Ctrl+Shift+N` → Asistente paso a paso → Snippet listo para usar
 
 ## 🛠️ Sistema de Plantillas Personalizadas
 

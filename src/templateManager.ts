@@ -421,6 +421,45 @@ export class TemplateManager {
         return `template_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     }
 
+    // Crear plantilla desde datos del asistente
+    public async createTemplateFromData(data: {
+        name: string;
+        description: string;
+        content: string;
+        language?: string;
+        category: string;
+        prefix?: string;
+    }): Promise<void> {
+        try {
+            // Verificar que no existe una plantilla con el mismo nombre
+            if (this.userTemplates.some(t => t.name === data.name)) {
+                throw new Error(`Ya existe un snippet con el nombre "${data.name}"`);
+            }
+
+            // Crear la plantilla
+            const template: UserTemplate = {
+                id: this.generateId(),
+                name: data.name,
+                description: data.description,
+                content: data.content,
+                language: data.language,
+                category: data.category,
+                prefix: data.prefix,
+                author: 'Usuario',
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+
+            this.userTemplates.push(template);
+            this.saveUserTemplates();
+
+            console.log(`Plantilla "${data.name}" creada correctamente`);
+        } catch (error) {
+            console.error('Error creando plantilla desde datos:', error);
+            throw error;
+        }
+    }
+
     // Obtener estadísticas
     public getStats(): { total: number; byLanguage: Record<string, number>; byCategory: Record<string, number> } {
         const byLanguage: Record<string, number> = {};
