@@ -23,6 +23,14 @@
     "onCommand:quickSnippet.insertConsoleLog",
     "onCommand:quickSnippet.searchSnippets",
     "onCommand:quickSnippet.insertByCategory",
+    "onCommand:quickSnippet.createTemplate",
+    "onCommand:quickSnippet.editTemplate",
+    "onCommand:quickSnippet.deleteTemplate",
+    "onCommand:quickSnippet.importTemplates",
+    "onCommand:quickSnippet.exportTemplates",
+    "onCommand:quickSnippet.openTemplatesFile",
+    "onCommand:quickSnippet.reloadTemplates",
+    "onCommand:quickSnippet.templateStats",
     "onCommand:quickSnippet.openSettings"
   ],
   "main": "./out/extension.js",
@@ -57,6 +65,54 @@
         "title": "Insertar por Categoría",
         "category": "Quick Snippet",
         "icon": "$(folder)"
+      },
+      {
+        "command": "quickSnippet.createTemplate",
+        "title": "Crear Snippet Personalizado",
+        "category": "Quick Snippet",
+        "icon": "$(add)"
+      },
+      {
+        "command": "quickSnippet.editTemplate",
+        "title": "Editar Snippet Personalizado",
+        "category": "Quick Snippet",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "quickSnippet.deleteTemplate",
+        "title": "Eliminar Snippet Personalizado",
+        "category": "Quick Snippet",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "quickSnippet.importTemplates",
+        "title": "Importar Snippets desde Archivo",
+        "category": "Quick Snippet",
+        "icon": "$(cloud-download)"
+      },
+      {
+        "command": "quickSnippet.exportTemplates",
+        "title": "Exportar Snippets a Archivo",
+        "category": "Quick Snippet",
+        "icon": "$(cloud-upload)"
+      },
+      {
+        "command": "quickSnippet.openTemplatesFile",
+        "title": "Abrir Archivo de Snippets",
+        "category": "Quick Snippet",
+        "icon": "$(file-code)"
+      },
+      {
+        "command": "quickSnippet.reloadTemplates",
+        "title": "Recargar Snippets Personalizados",
+        "category": "Quick Snippet",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "quickSnippet.templateStats",
+        "title": "Ver Estadísticas de Snippets",
+        "category": "Quick Snippet",
+        "icon": "$(graph)"
       },
       {
         "command": "quickSnippet.openSettings",
@@ -94,6 +150,17 @@
         "key": "ctrl+shift+c",
         "mac": "cmd+shift+c",
         "when": "editorTextFocus"
+      },
+      {
+        "command": "quickSnippet.createTemplate",
+        "key": "ctrl+shift+n",
+        "mac": "cmd+shift+n",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "quickSnippet.templateStats",
+        "key": "ctrl+shift+alt+t",
+        "mac": "cmd+shift+alt+t"
       }
     ],
     "menus": {
@@ -134,6 +201,30 @@
         },
         {
           "command": "quickSnippet.insertByCategory"
+        },
+        {
+          "command": "quickSnippet.createTemplate"
+        },
+        {
+          "command": "quickSnippet.editTemplate"
+        },
+        {
+          "command": "quickSnippet.deleteTemplate"
+        },
+        {
+          "command": "quickSnippet.importTemplates"
+        },
+        {
+          "command": "quickSnippet.exportTemplates"
+        },
+        {
+          "command": "quickSnippet.openTemplatesFile"
+        },
+        {
+          "command": "quickSnippet.reloadTemplates"
+        },
+        {
+          "command": "quickSnippet.templateStats"
         },
         {
           "command": "quickSnippet.openSettings"

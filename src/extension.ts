@@ -8,9 +8,39 @@ import {
     getAllLanguages, 
     searchSnippets 
 } from './snippets';
+import { TemplateManager } from './templateManager';
 
 export function activate(context: vscode.ExtensionContext) {
     console.log('🚀 Quick Snippet Inserter está activo!');
+
+    // Inicializar el gestor de plantillas
+    const templateManager = new TemplateManager(context);
+
+    // Función para obtener todos los snippets (predefinidos + usuario)
+    function getAllSnippets(): Snippet[] {
+        const userSnippets = templateManager.getUserSnippets();
+        return [...allSnippets, ...userSnippets];
+    }
+
+    // Función para obtener snippets por lenguaje (predefinidos + usuario)
+    function getSnippetsByLanguageExtended(language: string): Snippet[] {
+        const allSnippetsExtended = getAllSnippets();
+        return allSnippetsExtended.filter(snippet => 
+            snippet.language === language || snippet.language === undefined
+        );
+    }
+
+    // Función para buscar en todos los snippets (predefinidos + usuario)
+    function searchSnippetsExtended(query: string): Snippet[] {
+        const allSnippetsExtended = getAllSnippets();
+        const lowerQuery = query.toLowerCase();
+        return allSnippetsExtended.filter(snippet => 
+            snippet.name.toLowerCase().includes(lowerQuery) ||
+            snippet.description.toLowerCase().includes(lowerQuery) ||
+            snippet.category.toLowerCase().includes(lowerQuery) ||
+            (snippet.prefix && snippet.prefix.toLowerCase().includes(lowerQuery))
+        );
+    }
 
     // Comando principal: Insertar Snippet
     let insertSnippetCommand = vscode.commands.registerCommand('quickSnippet.insertSnippet', async () => {
@@ -25,12 +55,12 @@ export function activate(context: vscode.ExtensionContext) {
             // Detectar el lenguaje del archivo actual
             const currentLanguage = editor.document.languageId;
             
-            // Obtener snippets relevantes para el lenguaje actual
-            let relevantSnippets = getSnippetsByLanguage(currentLanguage);
+            // Obtener snippets relevantes para el lenguaje actual (incluye usuario)
+            let relevantSnippets = getSnippetsByLanguageExtended(currentLanguage);
             
             // Si no hay snippets específicos, mostrar todos
             if (relevantSnippets.length === 0) {
-                relevantSnippets = allSnippets;
+                relevantSnippets = getAllSnippets();
             }
 
             // Crear items para Quick Pick con categorías
@@ -65,7 +95,7 @@ export function activate(context: vscode.ExtensionContext) {
             {}
         );
 
-        panel.webview.html = generateSnippetListHTML();
+        panel.webview.html = generateSnippetListHTML(getAllSnippets());
     });
 
     // Comando: Insertar snippet específico (console.log)
@@ -76,7 +106,7 @@ export function activate(context: vscode.ExtensionContext) {
             return;
         }
 
-        const consoleLogSnippet = allSnippets.find(s => s.name === 'console.log');
+        const consoleLogSnippet = getAllSnippets().find(s => s.name === 'console.log');
         if (consoleLogSnippet) {
             await insertSnippetAtCursor(editor, consoleLogSnippet);
             vscode.window.showInformationMessage('✅ console.log insertado');
@@ -95,7 +125,7 @@ export function activate(context: vscode.ExtensionContext) {
                 return;
             }
 
-            const foundSnippets = searchSnippets(searchQuery);
+            const foundSnippets = searchSnippetsExtended(searchQuery);
             
             if (foundSnippets.length === 0) {
                 vscode.window.showInformationMessage(`No se encontraron snippets para "${searchQuery}"`);
@@ -176,6 +206,58 @@ export function activate(context: vscode.ExtensionContext) {
         }
     });
 
+    // ========== COMANDOS DE GESTIÓN DE PLANTILLAS ==========
+
+    // Comando: Crear plantilla personalizada
+    let createTemplateCommand = vscode.commands.registerCommand('quickSnippet.createTemplate', async () => {
+        await templateManager.createTemplate();
+    });
+
+    // Comando: Editar plantilla personalizada
+    let editTemplateCommand = vscode.commands.registerCommand('quickSnippet.editTemplate', async () => {
+        await templateManager.editTemplate();
+    });
+
+    // Comando: Eliminar plantilla personalizada
+    let deleteTemplateCommand = vscode.commands.registerCommand('quickSnippet.deleteTemplate', async () => {
+        await templateManager.deleteTemplate();
+    });
+
+    // Comando: Importar plantillas desde archivo
+    let importTemplatesCommand = vscode.commands.registerCommand('quickSnippet.importTemplates', async () => {
+        await templateManager.importTemplates();
+    });
+
+    // Comando: Exportar plantillas a archivo
+    let exportTemplatesCommand = vscode.commands.registerCommand('quickSnippet.exportTemplates', async () => {
+        await templateManager.exportTemplates();
+    });
+
+    // Comando: Abrir archivo de plantillas
+    let openTemplatesFileCommand = vscode.commands.registerCommand('quickSnippet.openTemplatesFile', async () => {
+        await templateManager.openTemplatesFile();
+    });
+
+    // Comando: Recargar plantillas
+    let reloadTemplatesCommand = vscode.commands.registerCommand('quickSnippet.reloadTemplates', () => {
+        templateManager.reloadTemplates();
+    });
+
+    // Comando: Ver estadísticas de plantillas
+    let templateStatsCommand = vscode.commands.registerCommand('quickSnippet.templateStats', () => {
+        const stats = templateManager.getStats();
+        const userSnippets = templateManager.getUserTemplates();
+        
+        const panel = vscode.window.createWebviewPanel(
+            'templateStats',
+            'Estadísticas de Snippets',
+            vscode.ViewColumn.One,
+            {}
+        );
+
+        panel.webview.html = generateStatsHTML(stats, userSnippets);
+    });
+
     // Comando: Abrir configuración
     let openSettingsCommand = vscode.commands.registerCommand('quickSnippet.openSettings', () => {
         vscode.commands.executeCommand('workbench.action.openSettings', 'quickSnippet');
@@ -188,6 +270,14 @@ export function activate(context: vscode.ExtensionContext) {
         insertConsoleLogCommand,
         searchSnippetsCommand,
         insertByCategoryCommand,
+        createTemplateCommand,
+        editTemplateCommand,
+        deleteTemplateCommand,
+        importTemplatesCommand,
+        exportTemplatesCommand,
+        openTemplatesFileCommand,
+        reloadTemplatesCommand,
+        templateStatsCommand,
         openSettingsCommand
     );
 
@@ -204,14 +294,14 @@ async function insertSnippetAtCursor(editor: vscode.TextEditor, snippet: Snippet
 }
 
 // Generar HTML para la lista de snippets
-function generateSnippetListHTML(): string {
+function generateSnippetListHTML(allSnippetsExtended: Snippet[]): string {
     // Agrupar snippets por categoría
-    const categories = getAllCategories();
-    const languages = getAllLanguages();
+    const categories = [...new Set(allSnippetsExtended.map((s: Snippet) => s.category))].sort();
+    const languages = [...new Set(allSnippetsExtended.map((s: Snippet) => s.language).filter((lang): lang is string => lang !== undefined))].sort();
     
-    const categorySections = categories.map(category => {
-        const categorySnippets = getSnippetsByCategory(category);
-        const snippetsList = categorySnippets.map(snippet => 
+    const categorySections = categories.map((category: string) => {
+        const categorySnippets = allSnippetsExtended.filter((snippet: Snippet) => snippet.category === category);
+        const snippetsList = categorySnippets.map((snippet: Snippet) => 
             `<div class="snippet-item" data-language="${snippet.language || 'all'}">
                 <h4>${snippet.name} ${snippet.prefix ? `<span class="prefix">[${snippet.prefix}]</span>` : ''}</h4>
                 <p class="description">${snippet.description}</p>
@@ -230,7 +320,7 @@ function generateSnippetListHTML(): string {
         </div>`;
     }).join('');
 
-    const languageButtons = languages.map(lang => 
+    const languageButtons = languages.map((lang: string) => 
         `<button class="filter-btn" data-language="${lang}">${lang}</button>`
     ).join('');
 
@@ -382,7 +472,7 @@ function generateSnippetListHTML(): string {
             <h1>📝 Snippets Disponibles</h1>
             
             <div class="stats">
-                <span class="stat-item">📊 Total: ${allSnippets.length} snippets</span>
+                <span class="stat-item">📊 Total: ${allSnippetsExtended.length} snippets</span>
                 <span class="stat-item">🏷️ ${categories.length} categorías</span>
                 <span class="stat-item">🔤 ${languages.length} lenguajes</span>
             </div>
@@ -425,6 +515,136 @@ function generateSnippetListHTML(): string {
                 });
             });
         </script>
+    </body>
+    </html>`;
+}
+
+// Generar HTML para las estadísticas de snippets
+function generateStatsHTML(stats: any, userTemplates: any[]): string {
+    const builtInCount = allSnippets.length;
+    const userCount = stats.total;
+    const totalCount = builtInCount + userCount;
+
+    const languageStats = Object.entries(stats.byLanguage)
+        .map(([lang, count]) => `<tr><td>${lang}</td><td>${count}</td></tr>`)
+        .join('');
+
+    const categoryStats = Object.entries(stats.byCategory)
+        .map(([cat, count]) => `<tr><td>${cat}</td><td>${count}</td></tr>`)
+        .join('');
+
+    const recentTemplates = userTemplates
+        .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+        .slice(0, 5)
+        .map(template => `
+            <div class="template-item">
+                <h4>${template.name}</h4>
+                <p>${template.description}</p>
+                <small>Actualizado: ${new Date(template.updatedAt).toLocaleDateString()}</small>
+            </div>
+        `).join('');
+
+    return `<!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Estadísticas de Snippets</title>
+        <style>
+            body { 
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+                padding: 20px; 
+                color: var(--vscode-foreground);
+                background-color: var(--vscode-editor-background);
+            }
+            .dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+            .card { 
+                background: var(--vscode-editor-background);
+                border: 1px solid var(--vscode-panel-border);
+                border-radius: 8px;
+                padding: 20px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .card h3 { 
+                margin-top: 0; 
+                color: var(--vscode-textLink-foreground);
+                border-bottom: 2px solid var(--vscode-textLink-foreground);
+                padding-bottom: 8px;
+            }
+            .stat-number { 
+                font-size: 2em; 
+                font-weight: bold; 
+                color: var(--vscode-symbolIcon-functionForeground);
+                margin: 10px 0;
+            }
+            table { 
+                width: 100%; 
+                border-collapse: collapse; 
+                margin-top: 10px;
+            }
+            th, td { 
+                padding: 8px; 
+                text-align: left; 
+                border-bottom: 1px solid var(--vscode-panel-border);
+            }
+            th { 
+                background: var(--vscode-badge-background);
+                color: var(--vscode-badge-foreground);
+            }
+            .template-item {
+                border: 1px solid var(--vscode-panel-border);
+                padding: 12px;
+                margin: 8px 0;
+                border-radius: 4px;
+                background: var(--vscode-textCodeBlock-background);
+            }
+            .template-item h4 { margin: 0 0 5px 0; }
+            .template-item p { margin: 5px 0; color: var(--vscode-descriptionForeground); }
+            .template-item small { color: var(--vscode-textPreformat-foreground); }
+        </style>
+    </head>
+    <body>
+        <h1>📊 Estadísticas de Snippets</h1>
+        
+        <div class="dashboard">
+            <div class="card">
+                <h3>📈 Resumen General</h3>
+                <div class="stat-number">${totalCount}</div>
+                <p>Snippets totales</p>
+                <hr>
+                <p>🏠 Predefinidos: <strong>${builtInCount}</strong></p>
+                <p>👤 Personalizados: <strong>${userCount}</strong></p>
+            </div>
+            
+            <div class="card">
+                <h3>🔤 Por Lenguaje</h3>
+                <table>
+                    <thead>
+                        <tr><th>Lenguaje</th><th>Cantidad</th></tr>
+                    </thead>
+                    <tbody>
+                        ${languageStats || '<tr><td colspan="2">No hay snippets personalizados</td></tr>'}
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="card">
+                <h3>📁 Por Categoría</h3>
+                <table>
+                    <thead>
+                        <tr><th>Categoría</th><th>Cantidad</th></tr>
+                    </thead>
+                    <tbody>
+                        ${categoryStats || '<tr><td colspan="2">No hay snippets personalizados</td></tr>'}
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="card">
+                <h3>🕒 Recientemente Modificados</h3>
+                ${recentTemplates || '<p>No hay snippets personalizados</p>'}
+            </div>
+        </div>
     </body>
     </html>`;
 }
