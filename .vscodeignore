@@ -1,0 +1,56 @@
+# Código fuente TypeScript
+.vscode/**
+.vscode-test/**
+src/**
+.gitignore
+.yarnrc
+vsc-extension-quickstart.md
+**/tsconfig.json
+**/.eslintrc.json
+**/*.map
+**/*.ts
+
+# Archivos de desarrollo
+node_modules/**
+.git/**
+.DS_Store
+Thumbs.db
+
+# Documentación de desarrollo (mantener README.md)
+CONTRIBUTING.md
+docs/**
+.github/**
+
+# Archivos de configuración de desarrollo
+.eslintrc.js
+.prettierrc
+.editorconfig
+tslint.json
+.travis.yml
+.appveyor.yml
+
+# Archivos de prueba
+test/**
+tests/**
+**/*.test.ts
+**/*.spec.ts
+
+# Logs y archivos temporales
+*.log
+*.tmp
+.cache/
+
+# Archivos de backup
+*.bak
+*.backup
+
+# Coverage reports
+coverage/
+.nyc_output/
+
+# Incluir explícitamente estos archivos importantes
+!README.md
+!CHANGELOG.md
+!LICENSE
+!package.json
+!icon.png 

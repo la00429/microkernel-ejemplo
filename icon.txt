@@ -1,0 +1,17 @@
+# Quick Snippet Inserter Icon
+
+Este archivo representa el icono de la extensión.
+En un proyecto real, sería un archivo icon.png de 128x128 píxeles.
+
+Diseño conceptual:
+🚀 - Representa velocidad y eficiencia
+📝 - Representa snippets y código
+⚡ - Representa inserción rápida
+
+Colores sugeridos:
+- Fondo: #1e1e1e (tema oscuro)
+- Icono principal: #007acc (azul VSCode)
+- Acentos: #00d4aa (verde)
+
+El icono real debería ser un PNG profesional que combine estos elementos
+de manera visualmente atractiva para el VSCode Marketplace. 
