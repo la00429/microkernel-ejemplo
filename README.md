@@ -57,11 +57,6 @@ microkernel-ejemplo/
 3. **Usa los fragmentos**: En `fragmentos/` encontraras codigo para copiar
 4. **Consulta la solucion**: Si te atascas, revisa `solucion/` como referencia
 
-### Modalidad Con Instructor
-1. **Sigue al instructor**: Los pasos se realizaran en conjunto
-2. **Participa activamente**: Haz preguntas y experimenta
-3. **Usa los recursos**: Los fragmentos y solucion estan disponibles como apoyo
-
 ## Pasos del Taller
 
 ### Paso 1: Configuracion Inicial (30 min)
@@ -139,35 +134,6 @@ microkernel-ejemplo/
 - `taller/docs/USER_GUIDE.md`
 - `taller/LICENSE`
 
-## Duracion Estimada
-
-| Paso | Tiempo | Acumulado |
-|------|--------|-----------|
-| **Paso 1**: Configuracion | 30 min | 30 min |
-| **Paso 2**: Comandos | 45 min | 1h 15min |
-| **Paso 3**: Snippets | 60 min | 2h 15min |
-| **Paso 4**: UI | 75 min | 3h 30min |
-| **Paso 5**: Plantillas | 90 min | 5h |
-| **Paso 6**: Empaquetado | 45 min | 5h 45min |
-| **Total** | | **~6 horas** |
-
-## Niveles de Dificultad
-
-### Principiante
-- Sigue los pasos exactamente como se indican
-- Usa los fragmentos de codigo proporcionados
-- Consulta la solucion cuando sea necesario
-
-### Intermedio  
-- Intenta implementar cada funcion antes de ver los fragmentos
-- Experimenta con variaciones del codigo
-- Agrega funcionalidades adicionales
-
-### Avanzado
-- Implementa las funciones usando solo las especificaciones
-- Mejora el codigo con patrones de diseño avanzados
-- Extiende la funcionalidad mas alla de los requisitos
-
 ## Herramientas y Comandos Utiles
 
 ### Comandos de Desarrollo
@@ -236,11 +202,6 @@ Al completar el taller habras creado una extension VSCode completa con:
 **¿Listo para crear tu primera extension VSCode?**
 
 👉 **Siguiente paso**: Abre `taller/instrucciones.md` y comienza con el Paso 1
-
----
-
-### Consejo para el Exito
-*No tengas miedo de experimentar y hacer preguntas. La programacion se aprende mejor haciendo, y cada error es una oportunidad de aprendizaje. ¡Diviertete creando!*
 
 ---
 
