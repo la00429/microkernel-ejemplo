@@ -1,4 +1,4 @@
-# Taller: Desarrollo de Extension VSCode - Plugin de Snippets Rapidos
+# Taller: Plugin de Snippets Rapidos
 
 ¡Bienvenido al taller practico de desarrollo de extensiones para Visual Studio Code! En este taller aprenderas a crear una extension completa desde cero que permite insertar snippets de codigo de manera rapida y eficiente.
 
