@@ -36,23 +36,6 @@ microkernel-ejemplo/
 
 ## 🚀 Cómo Usar Este Taller
 
-### Para Instructores
-
-1. **Preparación**:
-   - Clona o descarga este repositorio
-   - Revisa la `solucion/` para familiarizarte con el resultado final
-   - Prepara el entorno de desarrollo (Node.js, VSCode)
-
-2. **Durante el Taller**:
-   - Los participantes trabajarán en `taller/`
-   - Usa `fragmentos/` como referencia para mostrar código
-   - `solucion/` está disponible para consultas y comparaciones
-
-3. **Modalidad de Enseñanza**:
-   - **Paso a paso**: Sigue `taller/instrucciones.md`
-   - **Fragmentos**: Usa archivos en `fragmentos/` para mostrar código
-   - **Referencia**: Consulta `solucion/` cuando sea necesario
-
 ### Para Estudiantes Autoguiados
 
 1. **Inicio**:
@@ -171,40 +154,6 @@ Al completar el taller, habrás creado:
 - **Persistencia de datos** en extensiones
 - **Empaquetado y distribución** de extensiones
 
-## ⏱️ Cronograma Sugerido
-
-### Taller de Día Completo (6 horas)
-```
-09:00 - 09:30  │ Introducción y Setup (Paso 1)
-09:30 - 10:15  │ Comandos Básicos (Paso 2)
-10:15 - 10:30  │ ☕ Descanso
-10:30 - 11:30  │ Sistema de Snippets (Paso 3)
-11:30 - 12:45  │ Interfaz de Usuario (Paso 4)
-12:45 - 13:45  │ 🍽️ Almuerzo
-13:45 - 15:15  │ Plantillas Personalizadas (Paso 5)
-15:15 - 15:30  │ ☕ Descanso
-15:30 - 16:15  │ Documentación y Empaquetado (Paso 6)
-16:15 - 16:30  │ Cierre y Q&A
-```
-
-### Taller de Medio Día (3 horas)
-```
-09:00 - 09:15  │ Introducción (Paso 1 simplificado)
-09:15 - 09:45  │ Comandos Básicos (Paso 2)
-09:45 - 10:30  │ Sistema de Snippets (Paso 3)
-10:30 - 10:45  │ ☕ Descanso
-10:45 - 11:30  │ Interfaz de Usuario (Paso 4 básico)
-11:30 - 12:00  │ Demo Plantillas Personalizadas (Paso 5)
-```
-
-### Sesiones Semanales (6 sesiones de 1 hora)
-- **Semana 1**: Paso 1 + Paso 2
-- **Semana 2**: Paso 3
-- **Semana 3**: Paso 4
-- **Semana 4**: Paso 5 (Parte 1)
-- **Semana 5**: Paso 5 (Parte 2)
-- **Semana 6**: Paso 6 + Revisión
-
 ## 🛠️ Requisitos Técnicos
 
 ### Software Necesario
@@ -278,26 +227,8 @@ Al completar el taller, habrás creado:
 - ✅ Comprobar que el cursor está en el editor
 - ✅ Revisar contenido del snippet (sintaxis correcta)
 
-## 🏆 Certificación y Seguimiento
-
-### Al Completar el Taller
-- **Extensión VSCode funcional** lista para usar
-- **Código fuente completo** con buenas prácticas
-- **Documentación profesional** para distribución
-- **Conocimiento práctico** de desarrollo de extensiones
-
-### Próximos Pasos Sugeridos
-1. **Publicar en Marketplace**: Seguir guía de paso 6
-2. **Agregar más funcionalidades**: Usar roadmap como referencia
-3. **Contribuir a proyectos**: Aplicar conocimientos adquiridos
-4. **Enseñar a otros**: Compartir conocimiento con la comunidad
 
 ## 📝 Feedback y Mejoras
-
-### Para Instructores
-- Documenta qué pasos tomaron más/menos tiempo
-- Identifica puntos donde los estudiantes tuvieron dificultades
-- Sugiere mejoras en fragmentos de código o explicaciones
 
 ### Para Estudiantes
 - Comparte tu experiencia completando el taller
@@ -310,8 +241,3 @@ Al completar el taller, habrás creado:
 
 Si has llegado hasta aquí, tienes todo lo necesario para realizar un taller completo y profesional de desarrollo de extensiones VSCode. 
 
-**¡Que disfrutes enseñando y aprendiendo!** 
-
----
-
-*Creado con ❤️ para la comunidad de desarrolladores*
