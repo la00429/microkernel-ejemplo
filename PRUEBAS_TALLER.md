@@ -49,7 +49,7 @@
 #### Paso 3: Sistema de Snippets
 - [ ] **Snippets se insertan correctamente**
   - Crear archivo test.js
-  - Ctrl+Shift+S → seleccionar snippet → debe insertarse
+  - Ctrl+Shift+P → seleccionar snippet → debe insertarse
 - [ ] **Placeholders funcionan**
   - Después de insertar, debe haber texto seleccionado
   - Tab debe navegar entre placeholders
